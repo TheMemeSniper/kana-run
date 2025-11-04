@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kana run</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="./img/favicon-light.svg" type="image/x-icon">
+    <link rel="icon" href="./img/favicon-light.svg" type="image/x-icon" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="./img/favicon-dark.svg" type="image/x-icon" media="(prefers-color-scheme: dark)">
+    <meta property="og:title" content="kana run">
+    <meta property="og:description" content="Lock in and read kana quicker">
+    <meta content="#FFFFFF" name="theme-color">
+</head>
+<body>
+    <h1>kana run</h1>
+    <h2>lock in and read kana quicker</h2>
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
+    <h1 id="timer"></h1>
+    <h1>What kind of awesome is this?</h1>
+    <h1 id="kana-container"></h1>
+    <p>This is <input type="text" id="answer"></p>
+    <p id="score"></p>
+    <p id="total-correct"></p>
+    <p id="accuracy"></p>
+    <button id="answers-clear">Reset</button>
+    <details>
+        <summary>Kana sets</summary>
+        <div id="kana-sets" class="border">
+            <input type="checkbox" id="hiragana-monographs" checked>
+            <label for="hiragana-mono">Single-character Hiragana</label>
+            <input type="checkbox" id="hiragana-digraphs">
+            <label for="hiragana-bi">Two-character Hiragana</label>
+            <input type="checkbox" id="katakana-monographs">
+            <label for="katakana-mono">Single-character Katakana</label>
+            <input type="checkbox" id="katakana-digraphs">
+            <label for="katakana-bi">Two-character Katakana</label>
+            <input type="checkbox" id="katakana-trigraphs">
+            <label for="katakana-tri">Three-character Katakana</label>
+            <button id="update-kana-sets">OK</button>
+        </div>
+    </details>
+    <details>
+        <summary>Game modes</summary>
+        <div class="border">
+            <p>Time Trial: Type as many kana correctly as you can. Your score resets when you start a new round.</p>
+            <input type="number" id="time-trial-duration" placeholder="Duration in seconds" value="60">
+            <label for="time-trial-duration">seconds</label>
+            <button id="start-time-trial">Start Time Trial</button>
+        </div>
+    </details>
+    <details>
+        <summary>Answers</summary>
+        <div id="answers-container" style="display: flex; flex-direction: column-reverse;">
+        </div>
+    </details>
+    <a href="./about.html">about kana run</a>
+    <script type="module" src="script/index.js"></script>
+</body>
+</html>

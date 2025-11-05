@@ -4,43 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kana run</title>
+    <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link defer rel="preconnect" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="icon" href="./img/favicon-light.svg" type="image/x-icon">
     <link rel="icon" href="./img/favicon-light.svg" type="image/x-icon" media="(prefers-color-scheme: light)">
     <link rel="icon" href="./img/favicon-dark.svg" type="image/x-icon" media="(prefers-color-scheme: dark)">
     <meta property="og:title" content="kana run">
-    <meta property="og:description" content="Lock in and read kana quicker">
+    <meta property="og:description" content="game about reading and typing kana quickly">
     <meta content="#FFFFFF" name="theme-color">
+    <meta name="description" content="game about reading and typing kana quickly">
 </head>
 <body>
+    <noscript>kana run requires javascript.</noscript>
     <h1>kana run</h1>
     <h2>lock in and read kana quicker</h2>
     <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
     <script>eruda.init();</script>
-    <h1 id="timer"></h1>
+    <p id="timer" aria-hidden="true" role="timer" aria-live="polite"></p>
     <h1>What kind of awesome is this?</h1>
-    <h1 id="kana-container"></h1>
-    <p>This is <input type="text" id="answer"></p>
+    <p id="kana-container"></p>
+    <p id="kana-reader" class="visually-hidden" aria-live="assertive"></p>
+    <label for="answer">This kana is </label>
+    <input type="text" id="answer" role="main" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-describedby="kana-reader total-correct accuracy">
     <p id="score"></p>
     <p id="total-correct"></p>
     <p id="accuracy"></p>
     <button id="answers-clear">Reset</button>
     <details>
         <summary>Kana sets</summary>
-        <div id="kana-sets" class="border">
-            <input type="checkbox" id="hiragana-monographs" checked>
-            <label for="hiragana-mono">Single-character Hiragana</label>
-            <input type="checkbox" id="hiragana-digraphs">
-            <label for="hiragana-bi">Two-character Hiragana</label>
-            <input type="checkbox" id="katakana-monographs">
-            <label for="katakana-mono">Single-character Katakana</label>
-            <input type="checkbox" id="katakana-digraphs">
-            <label for="katakana-bi">Two-character Katakana</label>
-            <input type="checkbox" id="katakana-trigraphs">
-            <label for="katakana-tri">Three-character Katakana</label>
+        <div id="kana-sets" class="border" style="display: flex; flex-direction: column;">
+            <ol style="list-style: none; padding: 0; margin: 0;">
+                <li>
+                    <input type="checkbox" id="hiragana-monographs" checked>
+                    <label for="hiragana-monographs">Single-character Hiragana</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="hiragana-digraphs">
+                    <label for="hiragana-digraphs">Two-character Hiragana</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="katakana-monographs">
+                    <label for="katakana-monographs">Single-character Katakana</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="katakana-digraphs">
+                    <label for="katakana-digraphs">Two-character Katakana</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="katakana-trigraphs">
+                    <label for="katakana-trigraphs">Three-character Katakana</label>
+                </li>
+            </ol>
             <button id="update-kana-sets">OK</button>
         </div>
     </details>
@@ -55,10 +72,22 @@
     </details>
     <details>
         <summary>Answers</summary>
-        <div id="answers-container" style="display: flex; flex-direction: column-reverse;">
-        </div>
+        <ol id="answers-container" reversed>
+        </ol>
     </details>
-    <a href="./about.html">about kana run</a>
+    <div id="footer-links">
+        <a href="./about.html" class="footer-link">about kana run</a>
+        <a class="footer-link" id="eruda-start">start debugger</a>
+        <button id="install" hidden>Install</button>
+    </div>
+
     <script type="module" src="script/index.js"></script>
+    <script src="./upup.min.js"></script>
+    <script>
+        UpUp.start({
+        'content-url': 'index.html',
+        'assets': ['./style.css', './script/index.js', './img/favicon-light.svg', './img/favicon-dark.svg', './script/modules/kana.js'],
+        });
+    </script>
 </body>
 </html>

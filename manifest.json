@@ -1,0 +1,28 @@
+{
+    "name": "kana run",
+    "short_name": "kana run",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "./img/favicon-light.svg",
+            "type": "image/svg+xml",
+            "sizes": "192x192"
+        },
+        {
+            "src": "./img/favicon-light.svg",
+            "type": "image/svg+xml",
+            "sizes": "512x512"
+        },
+        {
+            "src": "./img/icon.png",
+            "type": "image/png",
+            "sizes": "1024x1024",
+            "purpose": "maskable"
+        }
+    ],
+    "description": "game about reading and typing kana quickly",
+    "start_url": "./index.html",
+    "background_color": "#000000",
+    "scope": "./",
+    "theme_color": "#000000"
+}

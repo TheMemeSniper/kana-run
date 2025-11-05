@@ -1,4 +1,22 @@
+:root {
+    --bg-color: #ffffff;
+    --bg-color-alt: #f0f0f0;
+    --text-color: #000000;
+    --link-color: #606060;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #000000;
+        --bg-color-alt: #202020;
+        --text-color: #ffffff;
+        --link-color: #f0f0f0;
+    }
+}
+
 body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
     justify-content: center;
     display: flex;
     flex-direction: column;
@@ -9,10 +27,120 @@ body {
 }
 
 .border {
-    border: 2px solid black;
+    border: 2px solid var(--text-color);
     padding: 10px;
     margin: 10px;
     border-radius: 10px;
-    background-color: #f0f0f0;
+    background-color: var(--bg-color-alt);
     max-width: 400px;
+}
+
+.answer-item {
+    color: #000000;
+}
+
+summary {
+    font-size: 2em;
+    background-color: var(--bg-color-alt);
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+details[open] {
+    background-color: var(--bg-color-alt);
+}
+
+#footer-links {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.footer-link {
+    color: var(--link-color);
+    text-decoration: none;
+    font-size: 24px;
+    cursor: pointer !important;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+.footer-link:link {
+    color: var(--link-color);
+}
+.footer-link:visited {
+    color: var(--link-color);
+}
+
+button {
+    background-color: var(--bg-color-alt);
+    color: var(--text-color);
+    border: 2px solid var(--text-color);
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+input[type="text"] {
+    padding: 10px;
+    border: 2px solid var(--text-color);
+    border-radius: 5px;
+    font-size: 1em;
+    width: 200px;
+    box-sizing: border-box;
+}
+
+input[type="number"] {
+    padding: 10px;
+    border: 2px solid var(--text-color);
+    border-radius: 5px;
+    font-size: 1em;
+    width: 100px;
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none;
+}
+
+#kana-container {
+    font-size: 5em;
+    margin: 20px;
+    height: 1.2em;
+}
+
+#timer {
+    font-size: 2em;
+    margin: 10px;
+}
+
+/* we need this for the kana readout label
+because screenreaders skip hidden elements (but not "visually hidden" ones) */
+.visually-hidden {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  -webkit-clip-path: inset(50%);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
 }

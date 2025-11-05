@@ -10,6 +10,7 @@ const incorrectSound = new Audio("./audio/incorrect.mp3");
 
 // main game elements
 const kanaElement = document.getElementById("kana-container");
+const kanaReader = document.getElementById("kana-reader");
 
 const answerBox = document.getElementById("answer");
 const answerContainer = document.getElementById("answers-container");
@@ -26,14 +27,18 @@ const startTimeTrialButton = document.getElementById("start-time-trial");
 const timeTrialDurationInput = document.getElementById("time-trial-duration");
 const timer = document.getElementById("timer");
 
-const answerTemplate = document.createElement("p");
+const answerTemplate = document.createElement("li");
 answerTemplate.classList.add("answer-item");
 answerTemplate.textContent = "";
+
+// misc
+const erudaStartLink = document.getElementById("eruda-start");
 
 // game state
 let score = 0;
 let totalQuestions = 0;
 let correctAnswers = 0;
+let lastCorrect = false;
 
 function randomKana() {
     const keys = Object.keys(currentKanaSet);
@@ -45,6 +50,9 @@ function question() {
     const kana = randomKana();
     kanaElement.textContent = kana;
     answerBox.value = "";
+    let prepend = lastCorrect ? "Correct, " : "Incorrect, ";
+    if (totalQuestions === 0) prepend = "";
+    kanaReader.textContent = `${prepend}type: ${kana}`;
 }
 
 function waitForTyping() {
@@ -58,7 +66,10 @@ function sleep(ms) {
 }
 
 async function startTimeTrial() {
-    answerBox.disabled = true;
+    resetGame();
+    answerBox.setAttribute("readonly", "true");
+    timer.classList.remove("hidden");
+    timer.setAttribute("aria-hidden", "false");
     timer.textContent = `Get ready!`;
     await sleep(1000);
 
@@ -73,7 +84,7 @@ async function startTimeTrial() {
     }, 1000);
 
     await sleep(4000);
-    answerBox.disabled = false;
+    answerBox.removeAttribute("readonly");
     answerBox.focus();
     await waitForTyping();
     timer.textContent = `Type!`;
@@ -86,7 +97,7 @@ async function startTimeTrial() {
         if (timeLeft <= 0) {
             clearInterval(interval);
             timer.textContent = "Time's up!";
-            answerBox.disabled = true;
+            answerBox.setAttribute("readonly", "true");
         }
     }, 1000);
 }
@@ -94,23 +105,29 @@ async function startTimeTrial() {
 function checkAnswer() {
     const userAnswer = answerBox.value.trim();
     if (userAnswer === kanaElement.textContent) {
+        correctSound.currentTime = 0;
         correctSound.play();
         const correctAnswer = answerTemplate.cloneNode();
         correctAnswer.textContent = `✅ ${userAnswer}`;
         correctAnswer.style.backgroundColor = "lightgreen";
-        answerContainer.appendChild(correctAnswer);
-        question();
+        correctAnswer.setAttribute("aria-label", `Correct answer: ${userAnswer}`);
+        answerContainer.prepend(correctAnswer);
+        lastCorrect = true;
         setScore(score + 1);
         correctAnswers++;
     } else {
+        incorrectSound.currentTime = 0;
         incorrectSound.play();
         const wrongAnswer = answerTemplate.cloneNode();
         wrongAnswer.textContent = `❌ ${userAnswer}:${kanaElement.textContent}・${currentKanaSet[kanaElement.textContent]}`;
         wrongAnswer.style.backgroundColor = "lightcoral";
-        answerContainer.appendChild(wrongAnswer);
+        wrongAnswer.setAttribute("aria-label", `Incorrect, you answered: ${userAnswer}. Correct answer: ${kanaElement.textContent}, typed as ${currentKanaSet[kanaElement.textContent]}`);
+        answerContainer.prepend(wrongAnswer);
+        lastCorrect = false;
     }
     totalQuestions++;
     totalCorrectLabel.textContent = `${correctAnswers}/${totalQuestions} correct`;
+    totalCorrectLabel.setAttribute("aria-label", `Total correct answers: ${correctAnswers} out of ${totalQuestions}`);
     const accuracy = ((correctAnswers / totalQuestions) * 100).toFixed(2);
     accuracyLabel.textContent = `Accuracy: ${accuracy}%`;
     question();
@@ -118,12 +135,15 @@ function checkAnswer() {
 
 function resetGame() {
     totalCorrectLabel.textContent = "0/0 correct";
+    totalCorrectLabel.setAttribute("aria-label", "Total correct answers: 0 out of 0");
     accuracyLabel.textContent = "Accuracy: 0%";
     correctAnswers = 0;
     totalQuestions = 0;
     setScore(0);
     answerContainer.innerHTML = "";
-    answerBox.disabled = false;
+    answerBox.removeAttribute("readonly");
+    timer.setAttribute("aria-hidden", "true");
+    timer.classList.add("hidden");
     question();
 }
 
@@ -169,7 +189,7 @@ answerBox.addEventListener("keydown", (event) => {
 });
 
 answerClearButton.addEventListener("click", () => {
-    answerContainer.innerHTML = "";
+    resetGame();
 });
 
 startTimeTrialButton.addEventListener("click", () => {
@@ -180,5 +200,10 @@ kanaUpdateButton.addEventListener("click", () => {
     updateCharacterSets();
 });
 
+erudaStartLink.addEventListener("click", () => {
+    eruda.init();
+});
 
 resetGame();
+
+navigator.serviceWorker?.register('./sw.js');

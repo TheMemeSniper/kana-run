@@ -205,5 +205,3 @@ erudaStartLink.addEventListener("click", () => {
 });
 
 resetGame();
-
-navigator.serviceWorker?.register('./sw.js');

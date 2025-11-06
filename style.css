@@ -3,6 +3,7 @@
     --bg-color-alt: #f0f0f0;
     --text-color: #000000;
     --link-color: #606060;
+    --text-box-color: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -11,6 +12,7 @@
         --bg-color-alt: #202020;
         --text-color: #ffffff;
         --link-color: #f0f0f0;
+        --text-box-color: #303030;
     }
 }
 
@@ -50,6 +52,7 @@ summary {
 
 details[open] {
     background-color: var(--bg-color-alt);
+    border-radius: 10px;
 }
 
 #footer-links {
@@ -96,24 +99,17 @@ button:active {
     transform: scale(0.95);
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"] {
     padding: 10px;
-    border: 2px solid var(--text-color);
-    border-radius: 5px;
+    border: 2px solid var(--bg-color-alt);
+    background-color: var(--text-box-color);
+    border-radius: 10px;
     font-size: 1em;
     width: 200px;
     box-sizing: border-box;
+    color: var(--text-color);
 }
-
-input[type="number"] {
-    padding: 10px;
-    border: 2px solid var(--text-color);
-    border-radius: 5px;
-    font-size: 1em;
-    width: 100px;
-    box-sizing: border-box;
-}
-
 .hidden {
     display: none;
 }
@@ -143,4 +139,8 @@ because screenreaders skip hidden elements (but not "visually hidden" ones) */
   position: absolute;
   width: 1px;
   white-space: nowrap;
+}
+
+ol li::marker {
+  color: var(--text-color);
 }

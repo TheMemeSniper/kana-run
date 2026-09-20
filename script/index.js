@@ -39,11 +39,19 @@ let score = 0;
 let totalQuestions = 0;
 let correctAnswers = 0;
 let lastCorrect = false;
+let flip = false;
 
 function randomKana() {
+    if (flip) {
+        const vals = Object.values(currentKanaSet);
+        const h = vals[Math.floor(Math.random() * vals.length)];
+        return h;
+    } else {
     const keys = Object.keys(currentKanaSet);
+    console.log(keys)
     const h = keys[Math.floor(Math.random() * keys.length)];
     return h;
+    }
 }
 
 function question() {
@@ -119,9 +127,15 @@ function checkAnswer() {
         incorrectSound.currentTime = 0;
         incorrectSound.play();
         const wrongAnswer = answerTemplate.cloneNode();
-        wrongAnswer.textContent = `❌ ${userAnswer}:${kanaElement.textContent}・${currentKanaSet[kanaElement.textContent]}`;
+        var correctAnswer
+        if (flip) {
+            correctAnswer = Object.keys(currentKanaSet).find(key => currentKanaSet[key] === kanaElement.textContent)
+        } else {
+            correctAnswer = currentKanaSet[kanaElement.textContent]
+        }
+        wrongAnswer.textContent = `❌ ${userAnswer}:${kanaElement.textContent}・${correctAnswer}`;
         wrongAnswer.style.backgroundColor = "lightcoral";
-        wrongAnswer.setAttribute("aria-label", `Incorrect, you answered: ${userAnswer}. Correct answer: ${kanaElement.textContent}, typed as ${currentKanaSet[kanaElement.textContent]}`);
+        wrongAnswer.setAttribute("aria-label", `Incorrect, you answered: ${userAnswer}. Correct answer: ${kanaElement.textContent}, typed as ${correctAnswer}`);
         answerContainer.prepend(wrongAnswer);
         lastCorrect = false;
     }
@@ -179,6 +193,7 @@ function updateCharacterSets() {
     });
     console.log("Updated kana set:", updatedSet);
     currentKanaSet = updatedSet;
+    flip = document.getElementById("flip").checked
     resetGame();
 }
 
